@@ -38,16 +38,16 @@ int main(int ac, char *av[])
         if(read_a(filename, a, n) == -1)
             return -1;
 
-        cout << "          ";
-        for(i = 0; i < n; i++)
-            printf("%10.3e ", a[i]);
-        cout << endl;
+//        cout << "          ";
+//        for(i = 0; i < n; i++)
+//            printf("%10.3e ", a[i]);
+//        cout << endl;
 
         //Заполним аргументы
         ARGS *args = new ARGS[p];
         for(i = 0; i < p; i++)
         {
-            args[i].p = p - 1;
+            args[i].p = p;
             args[i].m = i;
             args[i].a = a;
             args[i].n = n;
@@ -56,7 +56,7 @@ int main(int ac, char *av[])
 
         // Создаем потоки
         pthread_t *threads = new pthread_t[p];
-        for(i = 0; i < p - 1; i++)
+        for(i = 0; i < p; i++)
         {
             if(pthread_create(threads + i, 0, process_main, args + i))
             {
@@ -68,7 +68,7 @@ int main(int ac, char *av[])
         }
 
         //Ждем потоки
-        for(int i = 0; i < p - 1; i++)
+        for(int i = 0; i < p; i++)
         {
             if(pthread_join(threads[i], 0))
                 cout << "Cannot wait thread " << i << endl;
@@ -77,11 +77,18 @@ int main(int ac, char *av[])
         cout << "RESULT " << p << ": ";
         for(i = 0; i < n; i++)
             printf("%10.3e ", a[i]);
-//            cout << a[i] << " ";
-        cout << endl << "CPU TIME: ";
-        for(i = 0; i < p - 1; i++)
-            cout << args[i].cpu_time << " ";
-        cout << args[0].full_time << endl;
+        cout << endl;
+
+        cout << "CPU TIME" << endl;
+        for(i = 0; i < p; i++)
+            printf("     %d     | ", i);
+        cout << endl;
+        for(i = 0; i < p; i++)
+            printf("%10.3e | ", args[i].cpu_time);
+        cout << endl;
+
+        cout << "FULL TIME: ";
+        printf("%10.3e", args[0].full_time);
         cout << endl;
 
 
