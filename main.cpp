@@ -38,11 +38,6 @@ int main(int ac, char *av[])
         if(read_a(filename, a, n) == -1)
             return -1;
 
-//        cout << "          ";
-//        for(i = 0; i < n; i++)
-//            printf("%10.3e ", a[i]);
-//        cout << endl;
-
         //Заполним аргументы
         ARGS *args = new ARGS[p];
         for(i = 0; i < p; i++)
